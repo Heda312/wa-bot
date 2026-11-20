@@ -19,7 +19,13 @@ Detail produk: [docs/PRD-wa-reminder-bot.md](docs/PRD-wa-reminder-bot.md).
    akses tulis tambahan).
    Kolom `Status Kirim` & `Waktu Terkirim` diisi bot. Placeholder pesan: `{pic}`, `{task}`, `{id}`.
    Format `Waktu Kirim`: datetime (mis. `2026-11-25 09:00`), zona waktu Asia/Jakarta.
-3. **Env**: `cp .env.example .env`, isi `SPREADSHEET_ID` (dari URL sheet) dan path kredensial.
+3. **Env**: `cp .env.example .env`, isi:
+   - `SPREADSHEET_ID` — dari URL spreadsheet (`/d/<ID>/edit`)
+   - `GOOGLE_CREDENTIALS_PATH` — path file JSON service account
+   - `SHEET_REMINDERS` / `SHEET_CONTACTS` / `SHEET_TASKS` — nama sheet (default: `Reminders`, `Contacts`, `Task Tracker Tim`)
+   - `TIMEZONE` — zona waktu jadwal kirim (default `Asia/Jakarta`, diset ke proses bot saat start)
+   - `POLL_INTERVAL_MINUTES` — interval polling sheet (default 1)
+   - `SESSION_DIR` — folder session WA (default `./auth_info`, di-mount sebagai volume Docker)
 4. **Jalankan**: `docker compose up -d --build`, lalu `docker compose logs -f` dan
    scan QR yang muncul dengan nomor WA bot. Session tersimpan di `./auth_info`,
    restart tidak perlu scan ulang.

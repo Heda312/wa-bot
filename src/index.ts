@@ -7,6 +7,7 @@ import { createWaClient } from "./wa.js";
 const log = pino({ base: undefined });
 
 const cfg = loadConfig();
+process.env.TZ = cfg.timezone;
 log.info(
   { spreadsheet: cfg.spreadsheetId, intervalMs: cfg.pollIntervalMs },
   "config ok",

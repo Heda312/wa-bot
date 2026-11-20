@@ -126,7 +126,7 @@ Sheet Tasks asli milik user (ID Tugas, Path/Role, PIC Role, Periode, Nama Tugas 
 │      │                                                               │
 │      ▼                                                               │
 │  Scheduler ──► Sheets Client (googleapis) ──► Google Sheets API      │
-│      │              baca Reminders+Contacts / tulis status           │
+│      │     baca Reminders+Contacts+TaskTracker / tulis status        │
 │      ▼                                                               │
 │  ReminderProcessor ──► WA Client (Baileys) ──► WhatsApp servers      │
 │                                                                      │
@@ -137,7 +137,7 @@ Sheet Tasks asli milik user (ID Tugas, Path/Role, PIC Role, Periode, Nama Tugas 
 
 **Komponen**:
 1. `wa-client` — wrapper Baileys: connect, simpan session, kirim pesan, reconnect.
-2. `sheets-client` — baca range Reminders/Contacts, tulis status per baris.
+2. `sheets-client` — baca range Reminders/Contacts/Task Tracker (read-only), tulis status per baris.
 3. `scheduler` — cron loop: ambil due rows → proses → update status.
 4. `contact-mapper` — lookup PIC Role → nomor, normalisasi format nomor ke 62xxx.
 5. `config` — parsing `.env` + validasi saat start (fail fast kalau ada yang kurang).
