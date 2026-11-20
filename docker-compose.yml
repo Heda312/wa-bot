@@ -1,0 +1,10 @@
+services:
+  wa-bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      TZ: Asia/Jakarta
+    volumes:
+      - ./auth_info:/app/auth_info
+      - ./service-account.json:/app/service-account.json:ro

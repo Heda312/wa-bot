@@ -17,7 +17,7 @@
 - Versi Baileys di-pin exact di package.json (jangan pakai `^`).
 - File datar di `src/`: `config.ts`, `template.ts`, `sheets.ts`, `wa.ts`, `scheduler.ts`, `index.ts` (+ `*.test.ts`).
 - Secret (`.env`, `service-account.json`, `auth_info/`) tidak boleh masuk git maupun image Docker.
-- Test: `npm test` = `node --import tsx --test src/`. Build: `npm run build` = `tsc`.
+- Test: `npm test` = `node --import tsx --test "src/**/*.test.ts"`. Build: `npm run build` = `tsc`.
 - Commit tiap task selesai.
 
 ## File Structure
