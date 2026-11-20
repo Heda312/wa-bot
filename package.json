@@ -1,0 +1,30 @@
+{
+  "name": "wa-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "test": "node --import tsx --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "7.0.0-rc14",
+    "dotenv": "18.0.10",
+    "googleapis": "190.0.0",
+    "pino": "10.4.0",
+    "qrcode": "1.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/qrcode": "1.5.6",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "protobufjs@7.6.6": true,
+    "@whiskeysockets/baileys@7.0.0-rc14": true
+  }
+}
