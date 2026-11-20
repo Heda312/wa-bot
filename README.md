@@ -1,7 +1,9 @@
 # wa-bot — WhatsApp Reminder Bot
 
-Bot yang membaca Google Sheets (`Reminders` + `Contacts`) tiap menit, mengirim pesan
-WhatsApp custom ke nomor PIC sesuai jadwal, lalu menulis status terkirim balik ke sheet.
+Bot yang membaca Google Sheets (`Reminders` + `Contacts` + status dari `Task Tracker Tim`)
+tiap menit, mengirim pesan WhatsApp custom ke nomor PIC sesuai jadwal (jendela kirim
+19:00–20:00 WIB), lalu menulis status terkirim balik ke sheet. Task yang sudah berstatus
+`Selesai` di `Task Tracker Tim` otomatis tidak di-reminder lagi.
 Detail produk: [docs/PRD-wa-reminder-bot.md](docs/PRD-wa-reminder-bot.md).
 
 ## Setup sekali
@@ -12,6 +14,9 @@ Detail produk: [docs/PRD-wa-reminder-bot.md](docs/PRD-wa-reminder-bot.md).
    Buat 2 sheet:
    - `Reminders` dengan header persis: `ID Tugas | PIC Role | Nama Tugas | Waktu Kirim | Pesan Reminder | Status Kirim | Waktu Terkirim`
    - `Contacts` dengan header: `PIC Role | Nomor WA`
+   Sheet `Task Tracker Tim` (tracker asli) cukup punya kolom `ID Tugas` dan `Status`;
+   bot hanya membacanya untuk mengecek task yang sudah `Selesai` (tidak perlu dibagikan
+   akses tulis tambahan).
    Kolom `Status Kirim` & `Waktu Terkirim` diisi bot. Placeholder pesan: `{pic}`, `{task}`, `{id}`.
    Format `Waktu Kirim`: datetime (mis. `2026-11-25 09:00`), zona waktu Asia/Jakarta.
 3. **Env**: `cp .env.example .env`, isi `SPREADSHEET_ID` (dari URL sheet) dan path kredensial.

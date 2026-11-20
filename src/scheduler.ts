@@ -23,11 +23,13 @@ export function selectDueRows(
   rows: ReminderRow[],
   contacts: Map<string, string>,
   now: Date,
+  taskStatus: Map<string, string> = new Map(),
 ): { due: DueRow[]; errors: RowError[] } {
   const due: DueRow[] = [];
   const errors: RowError[] = [];
   for (const r of rows) {
     if (!isPending(r.status) || r.message === "") continue;
+    if ((taskStatus.get(r.id) ?? "").toLowerCase() === "selesai") continue;
     if (r.sendAt === null) {
       errors.push({ rowIndex: r.rowIndex, status: "ERROR: waktu kirim tidak valid" });
       continue;
@@ -67,11 +69,12 @@ export async function runCycle(deps: {
   now?: Date;
 }): Promise<void> {
   const now = deps.now ?? new Date();
-  const [rows, contacts] = await Promise.all([
+  const [rows, contacts, taskStatus] = await Promise.all([
     deps.sheets.fetchReminders(),
     deps.sheets.fetchContacts(),
+    deps.sheets.fetchTaskStatus(),
   ]);
-  const { due, errors } = selectDueRows(rows, contacts, now);
+  const { due, errors } = selectDueRows(rows, contacts, now, taskStatus);
   deps.log.info({ due: due.length, error: errors.length }, "siklus: baris diproses");
 
   for (const e of errors) {

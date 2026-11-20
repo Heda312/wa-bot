@@ -4,6 +4,7 @@ export interface Config {
   spreadsheetId: string;
   sheetReminders: string;
   sheetContacts: string;
+  sheetTasks: string;
   timezone: string;
   pollIntervalMs: number;
   googleCredsPath: string;
@@ -22,6 +23,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     spreadsheetId: env.SPREADSHEET_ID!,
     sheetReminders: env.SHEET_REMINDERS || "Reminders",
     sheetContacts: env.SHEET_CONTACTS || "Contacts",
+    sheetTasks: env.SHEET_TASKS || "Task Tracker Tim",
     timezone: env.TIMEZONE || "Asia/Jakarta",
     pollIntervalMs: Number(env.POLL_INTERVAL_MINUTES || 1) * 60_000,
     googleCredsPath: env.GOOGLE_CREDENTIALS_PATH!,

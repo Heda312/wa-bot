@@ -41,6 +41,13 @@ test("baris masa depan, terkirim, dan pesan kosong dilewati", () => {
   );
 });
 
+test("task yang sudah Selesai di Task Tracker dilewati", () => {
+  const taskStatus = new Map([["T1", "Selesai"]]);
+  const { due, errors } = selectDueRows([row({})], contacts, NOW, taskStatus);
+  assert.equal(due.length, 0);
+  assert.equal(errors.length, 0);
+});
+
 test("kontak tidak ditemukan jadi error, bukan due", () => {
   const { due, errors } = selectDueRows([row({ pic: "unknown" })], contacts, NOW);
   assert.equal(due.length, 0);

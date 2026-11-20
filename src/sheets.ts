@@ -101,9 +101,26 @@ export function parseContacts(values: unknown[][]): Map<string, string> {
   return map;
 }
 
+export function parseTaskStatus(values: unknown[][]): Map<string, string> {
+  const header = (values[0] ?? []).map(str);
+  const idIdx = header.indexOf("ID Tugas");
+  const statusIdx = header.indexOf("Status");
+  if (idIdx === -1 || statusIdx === -1) {
+    throw new Error("Sheet Task Tracker harus punya header 'ID Tugas' dan 'Status'");
+  }
+  const map = new Map<string, string>();
+  for (let i = 1; i < values.length; i++) {
+    const cells = values[i] ?? [];
+    const id = str(cells[idIdx]);
+    if (id !== "") map.set(id, str(cells[statusIdx]));
+  }
+  return map;
+}
+
 export interface SheetsClient {
   fetchReminders(): Promise<ReminderRow[]>;
   fetchContacts(): Promise<Map<string, string>>;
+  fetchTaskStatus(): Promise<Map<string, string>>;
   setStatus(rowIndex: number, status: string, sentAt: string | null): Promise<void>;
 }
 
@@ -127,6 +144,7 @@ export async function createSheetsClient(cfg: Config): Promise<SheetsClient> {
   return {
     fetchReminders: async () => parseReminders(await read(cfg.sheetReminders)),
     fetchContacts: async () => parseContacts(await read(cfg.sheetContacts)),
+    fetchTaskStatus: async () => parseTaskStatus(await read(cfg.sheetTasks)),
     setStatus: async (rowIndex, status, sentAt) => {
       await api.spreadsheets.values.update({
         spreadsheetId: cfg.spreadsheetId,

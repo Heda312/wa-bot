@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseContacts, parseReminders, parseSendTime } from "./sheets.js";
+import { parseContacts, parseReminders, parseSendTime, parseTaskStatus } from "./sheets.js";
 
 const HEADER = [
   "ID Tugas",
@@ -46,6 +46,17 @@ test("parseReminders ambil baris valid, lewati baris kosong", () => {
 
 test("parseReminders throw kalau header wajib tidak ada", () => {
   assert.throws(() => parseReminders([["ID Tugas", "PIC Role"]]), /header/);
+});
+
+test("parseTaskStatus mapping id ke status", () => {
+  const map = parseTaskStatus([
+    ["ID Tugas", "Path / Role", "Status"],
+    ["TSK-DS-01", "Data Scientist", "Selesai"],
+    ["TSK-DS-03", "Data Scientist", "Sedang Berjalan"],
+  ]);
+  assert.equal(map.get("TSK-DS-01"), "Selesai");
+  assert.equal(map.get("TSK-DS-03"), "Sedang Berjalan");
+  assert.equal(map.has("TSK-X"), false);
 });
 
 test("parseContacts mapping role ke nomor ternormalisasi", () => {

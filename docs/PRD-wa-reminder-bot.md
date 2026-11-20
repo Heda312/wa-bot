@@ -58,9 +58,10 @@ Dibutuhkan bot WhatsApp yang otomatis mengirim pesan reminder custom ke nomor WA
 ### FR-2 Sumber Data Google Sheets
 - FR-2.1 Bot mengakses spreadsheet via Google Sheets API v4 dengan service account (JSON key).
 - FR-2.2 Service account diberi akses **Editor** pada spreadsheet (butuh tulis status).
-- FR-2.3 Dua sheet dipakai bot (sheet Tasks asli yang kompleks TIDAK dibaca bot sama sekali):
+- FR-2.3 Tiga sheet dipakai bot (sheet Tasks asli yang kompleks TIDAK dibaca bot sama sekali):
   - `Reminders` — sheet sederhana khusus bot, self-contained per baris reminder.
   - `Contacts` — mapping PIC Role → nomor WA.
+  - `Task Tracker Tim` — sheet tracker asli milik user, dibaca **read-only** sebagai sumber status task (kolom `ID Tugas` & `Status`).
 - FR-2.4 Nama spreadsheet, nama sheet, dan rentang kolom dikonfigurasi via `.env`.
 
 ### FR-3 Skema Data
@@ -96,6 +97,8 @@ Sheet Tasks asli milik user (ID Tugas, Path/Role, PIC Role, Periode, Nama Tugas 
 - FR-4.5 Pesan diambil dari kolom `Pesan Reminder` dengan dukungan placeholder yang diganti dari kolom lain di baris yang sama: `{pic}` (PIC Role), `{task}` (Nama Tugas), `{id}` (ID Tugas). Placeholder yang tidak dikenal dibiarkan apa adanya.
 - FR-4.6 Pengiriman antar baris diberi jeda kecil (mis. 2–5 detik acak) untuk menghindari rate-limit WA.
 - FR-4.7 Semua waktu diproses dalam timezone `Asia/Jakarta` (configurable).
+- FR-4.8 Jendela waktu kirim reminder operasional: 19:00–20:00 WIB (diisi pada kolom Waktu Kirim sheet Reminders, di-stagger per jalur task agar tidak burst).
+- FR-4.9 Auto-stop: jika status task di sheet `Task Tracker Tim` (join via `ID Tugas`) sudah `Selesai`, baris reminder dilewati tanpa dikirim dan tanpa ditulis status error. Baris tetap pending sehingga kirim lagi otomatis jika status diubah kembali.
 
 ### FR-5 Penulisan Status Balik
 - FR-5.1 Sukses → tulis `TERKIRIM` di kolom status + waktu aktual di `waktu_terkirim`.

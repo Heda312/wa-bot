@@ -1,31 +1,31 @@
 ID Tugas	PIC Role	Nama Tugas	Waktu Kirim	Pesan Reminder	Status Kirim	Waktu Terkirim
-TSK-DS-03	Intan	Perancangan skema database produk	2026-11-23 09:00	Halo {pic}! Minggu ini mulai {task} ({id}). Pastikan skema normal mencakup nama, kategori, varian ukuran, stok & min_restock ya.		
-TSK-DS-04	Hasya	Pengisian data awal ke database	2026-11-23 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): isi 100 SKU ATK & seragam, lalu uji akurasi kueri ukuran/varian.		
-TSK-DS-04	Intan	Pengisian data awal ke database	2026-11-23 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): isi 100 SKU ATK & seragam, lalu uji akurasi kueri ukuran/varian.		
-TSK-DS-05	Hasya	Pengujian skenario kueri data inventaris	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): siapkan 50+ skenario uji stok (tersedia, menipis, tidak ditemukan).		
-TSK-DS-06	Intan	Validasi output chatbot vs data aktual	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): susun lembar evaluasi akurasi jawaban, target >95%.		
-TSK-DS-07	Hasya	Pendampingan UAT & live demo	2026-12-07 09:00	Halo {pic}! Minggu ini {task} ({id}): dampingi pemilik Toko Anugerah saat UAT & live demo ya.		
-TSK-DS-07	Intan	Pendampingan UAT & live demo	2026-12-07 09:00	Halo {pic}! Minggu ini {task} ({id}): dampingi pemilik Toko Anugerah saat UAT & live demo ya.		
-TSK-DS-08	Hasya	Data dictionary & SOP update stok	2026-12-07 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): buat panduan yang mudah dipahami staf non-teknis toko.		
-TSK-DS-09	Hasya	Demand forecasting musiman	2026-12-14 09:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}), target MAPE <15%.		
-TSK-DS-09	Intan	Demand forecasting musiman	2026-12-14 09:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}), target MAPE <15%.		
-TSK-DS-10	Intan	Algoritma reorder point otomatis	2026-12-14 09:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}) berbasis safety stock.		
-TSK-AI-03	Ghally	Pipeline RAG (chunking & indexing)	2026-11-23 09:00	Halo {pic}! Minggu ini lanjut {task} ({id}): seluruh katalog harus terindeks jadi embedding vektor.		
-TSK-AI-04	Ghally	Logika retrieval bahasa natural	2026-11-23 09:00	Halo {pic}! Minggu ini lanjut {task} ({id}): target hit rate relevansi konteks >90%.		
-TSK-AI-05	Wahyu	Integrasi RAG ke REST API FastAPI	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): endpoint chat harus respons asinkron & stabil.		
-TSK-AI-06	Ghally	Optimasi prompt guardrails	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): zero halusinasi harga/produk gaib ya.		
-TSK-AI-06	Wahyu	Optimasi prompt guardrails	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): zero halusinasi harga/produk gaib ya.		
-TSK-AI-07	Ghally	Fine-tuning prompt dari masukan UAT	2026-12-07 09:00	Halo {pic}! Minggu ini {task} ({id}): kalibrasi gaya bahasa sesuai interaksi pemilik toko.		
-TSK-AI-08	Wahyu	Dokumentasi teknis arsitektur AI	2026-12-07 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): lengkap dengan troubleshooting & error fallback.		
-TSK-AI-09	Ghally	Multi-turn conversation kontekstual	2026-12-14 09:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}), target konteks bertahan 10 putaran.		
-TSK-AI-10	Wahyu	Ringkasan stok mingguan otomatis	2026-12-14 09:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}) berbasis LLM.		
-TSK-FS-03	Rafi	UI chat interaktif	2026-11-23 09:00	Halo {pic}! Minggu ini lanjut {task} ({id}): pastikan responsif di browser HP & desktop.		
-TSK-FS-04	Rizki	Endpoint REST API backend inventaris	2026-11-23 09:00	Halo {pic}! Minggu ini lanjut {task} ({id}): route stok, kategori, health check + error handling rapi.		
-TSK-FS-05	Rafi	Integrasi end-to-end staging	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): kueri dari chat UI harus memicu RAG sampai jawaban tampil.		
-TSK-FS-05	Rizki	Integrasi end-to-end staging	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): kueri dari chat UI harus memicu RAG sampai jawaban tampil.		
-TSK-FS-06	Rafi	Pengujian end-to-end & validasi input	2026-11-30 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): uji input ekstrem & beban beruntun.		
-TSK-FS-07	Rizki	Deployment ke staging/production	2026-12-07 09:00	Halo {pic}! Minggu ini {task} ({id}): aplikasi harus stabil diakses via link web.		
-TSK-FS-08	Rafi	UAT pemilik toko & final bug fixes	2026-12-07 09:00	Halo {pic}! Minggu ini {task} ({id}): siapkan berita acara UAT & rilis MVP v1.0.		
-TSK-FS-08	Rizki	UAT pemilik toko & final bug fixes	2026-12-07 09:00	Halo {pic}! Minggu ini {task} ({id}): siapkan berita acara UAT & rilis MVP v1.0.		
-TSK-FS-09	Rafi	Buku panduan pengguna StationeryIQ	2026-12-07 09:00	Halo {pic}! Minggu ini mulai {task} ({id}): panduan praktis untuk pemilik/kasir + screenshot.		
-TSK-FS-10	Rizki	Dashboard admin CRUD stok	2026-12-14 09:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}) + autentikasi login pemilik toko.		
+TSK-DS-03	Intan	Perancangan skema database produk	2026-11-23 19:00	Halo {pic}! Minggu ini mulai {task} ({id}). Pastikan skema normal mencakup nama, kategori, varian ukuran, stok & min_restock ya.		
+TSK-DS-04	Hasya	Pengisian data awal ke database	2026-11-23 19:00	Halo {pic}! Minggu ini mulai {task} ({id}): isi 100 SKU ATK & seragam, lalu uji akurasi kueri ukuran/varian.		
+TSK-DS-04	Intan	Pengisian data awal ke database	2026-11-23 19:00	Halo {pic}! Minggu ini mulai {task} ({id}): isi 100 SKU ATK & seragam, lalu uji akurasi kueri ukuran/varian.		
+TSK-DS-05	Hasya	Pengujian skenario kueri data inventaris	2026-11-30 19:00	Halo {pic}! Minggu ini mulai {task} ({id}): siapkan 50+ skenario uji stok (tersedia, menipis, tidak ditemukan).		
+TSK-DS-06	Intan	Validasi output chatbot vs data aktual	2026-11-30 19:00	Halo {pic}! Minggu ini mulai {task} ({id}): susun lembar evaluasi akurasi jawaban, target >95%.		
+TSK-DS-07	Hasya	Pendampingan UAT & live demo	2026-12-07 19:00	Halo {pic}! Minggu ini {task} ({id}): dampingi pemilik Toko Anugerah saat UAT & live demo ya.		
+TSK-DS-07	Intan	Pendampingan UAT & live demo	2026-12-07 19:00	Halo {pic}! Minggu ini {task} ({id}): dampingi pemilik Toko Anugerah saat UAT & live demo ya.		
+TSK-DS-08	Hasya	Data dictionary & SOP update stok	2026-12-07 19:00	Halo {pic}! Minggu ini mulai {task} ({id}): buat panduan yang mudah dipahami staf non-teknis toko.		
+TSK-DS-09	Hasya	Demand forecasting musiman	2026-12-14 19:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}), target MAPE <15%.		
+TSK-DS-09	Intan	Demand forecasting musiman	2026-12-14 19:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}), target MAPE <15%.		
+TSK-DS-10	Intan	Algoritma reorder point otomatis	2026-12-14 19:00	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}) berbasis safety stock.		
+TSK-AI-03	Ghally	Pipeline RAG (chunking & indexing)	2026-11-23 19:20	Halo {pic}! Minggu ini lanjut {task} ({id}): seluruh katalog harus terindeks jadi embedding vektor.		
+TSK-AI-04	Ghally	Logika retrieval bahasa natural	2026-11-23 19:20	Halo {pic}! Minggu ini lanjut {task} ({id}): target hit rate relevansi konteks >90%.		
+TSK-AI-05	Wahyu	Integrasi RAG ke REST API FastAPI	2026-11-30 19:20	Halo {pic}! Minggu ini mulai {task} ({id}): endpoint chat harus respons asinkron & stabil.		
+TSK-AI-06	Ghally	Optimasi prompt guardrails	2026-11-30 19:20	Halo {pic}! Minggu ini mulai {task} ({id}): zero halusinasi harga/produk gaib ya.		
+TSK-AI-06	Wahyu	Optimasi prompt guardrails	2026-11-30 19:20	Halo {pic}! Minggu ini mulai {task} ({id}): zero halusinasi harga/produk gaib ya.		
+TSK-AI-07	Ghally	Fine-tuning prompt dari masukan UAT	2026-12-07 19:20	Halo {pic}! Minggu ini {task} ({id}): kalibrasi gaya bahasa sesuai interaksi pemilik toko.		
+TSK-AI-08	Wahyu	Dokumentasi teknis arsitektur AI	2026-12-07 19:20	Halo {pic}! Minggu ini mulai {task} ({id}): lengkap dengan troubleshooting & error fallback.		
+TSK-AI-09	Ghally	Multi-turn conversation kontekstual	2026-12-14 19:20	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}), target konteks bertahan 10 putaran.		
+TSK-AI-10	Wahyu	Ringkasan stok mingguan otomatis	2026-12-14 19:20	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}) berbasis LLM.		
+TSK-FS-03	Rafi	UI chat interaktif	2026-11-23 19:40	Halo {pic}! Minggu ini lanjut {task} ({id}): pastikan responsif di browser HP & desktop.		
+TSK-FS-04	Rizki	Endpoint REST API backend inventaris	2026-11-23 19:40	Halo {pic}! Minggu ini lanjut {task} ({id}): route stok, kategori, health check + error handling rapi.		
+TSK-FS-05	Rafi	Integrasi end-to-end staging	2026-11-30 19:40	Halo {pic}! Minggu ini mulai {task} ({id}): kueri dari chat UI harus memicu RAG sampai jawaban tampil.		
+TSK-FS-05	Rizki	Integrasi end-to-end staging	2026-11-30 19:40	Halo {pic}! Minggu ini mulai {task} ({id}): kueri dari chat UI harus memicu RAG sampai jawaban tampil.		
+TSK-FS-06	Rafi	Pengujian end-to-end & validasi input	2026-11-30 19:40	Halo {pic}! Minggu ini mulai {task} ({id}): uji input ekstrem & beban beruntun.		
+TSK-FS-07	Rizki	Deployment ke staging/production	2026-12-07 19:40	Halo {pic}! Minggu ini {task} ({id}): aplikasi harus stabil diakses via link web.		
+TSK-FS-08	Rafi	UAT pemilik toko & final bug fixes	2026-12-07 19:40	Halo {pic}! Minggu ini {task} ({id}): siapkan berita acara UAT & rilis MVP v1.0.		
+TSK-FS-08	Rizki	UAT pemilik toko & final bug fixes	2026-12-07 19:40	Halo {pic}! Minggu ini {task} ({id}): siapkan berita acara UAT & rilis MVP v1.0.		
+TSK-FS-09	Rafi	Buku panduan pengguna StationeryIQ	2026-12-07 19:40	Halo {pic}! Minggu ini mulai {task} ({id}): panduan praktis untuk pemilik/kasir + screenshot.		
+TSK-FS-10	Rizki	Dashboard admin CRUD stok	2026-12-14 19:40	Halo {pic}! Fase pasca-MVP: mulai {task} ({id}) + autentikasi login pemilik toko.		
