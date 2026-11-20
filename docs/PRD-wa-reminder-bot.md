@@ -40,11 +40,11 @@ Dibutuhkan bot WhatsApp yang otomatis mengirim pesan reminder custom ke nomor WA
 **Persona**: User sebagai admin/operator (satu-satunya yang mengelola sheet dan bot). Penerima reminder adalah PIC task (anggota tim).
 
 **Skenario utama**:
-1. User mengisi baris baru di sheet `Tasks`: pilih PIC, tulis pesan reminder, set waktu kirim (mis. `2026-11-25 09:00`).
+1. User mengisi baris baru di sheet `Reminders`: ID Tugas, PIC Role, Nama Tugas, pesan reminder, waktu kirim (mis. `2026-11-25 09:00`).
 2. Bot polling tiap menit; pada `09:00` (atau menit pertama setelahnya) bot mengambil baris tersebut.
-3. Bot mencari nomor WA PIC di sheet `Contacts` berdasarkan Nama PIC/Role.
-4. Bot mengirim isi kolom pesan custom ke nomor tersebut via WA.
-5. Bot menulis `TERKIRIM` + timestamp di kolom status baris itu.
+3. Bot mencari nomor WA di sheet `Contacts` berdasarkan PIC Role.
+4. Bot mengirim isi kolom Pesan Reminder (setelah placeholder diganti) ke nomor tersebut via WA.
+5. Bot menulis `TERKIRIM` + timestamp di kolom Status Kirim & Waktu Terkirim baris itu.
 6. User bisa melihat status pengiriman langsung di sheet.
 
 ## 5. Kebutuhan Fungsional
@@ -58,43 +58,42 @@ Dibutuhkan bot WhatsApp yang otomatis mengirim pesan reminder custom ke nomor WA
 ### FR-2 Sumber Data Google Sheets
 - FR-2.1 Bot mengakses spreadsheet via Google Sheets API v4 dengan service account (JSON key).
 - FR-2.2 Service account diberi akses **Editor** pada spreadsheet (butuh tulis status).
-- FR-2.3 Dua sheet dibaca:
-  - `Tasks` — daftar task & reminder.
-  - `Contacts` — mapping PIC → nomor WA.
+- FR-2.3 Dua sheet dipakai bot (sheet Tasks asli yang kompleks TIDAK dibaca bot sama sekali):
+  - `Reminders` — sheet sederhana khusus bot, self-contained per baris reminder.
+  - `Contacts` — mapping PIC Role → nomor WA.
 - FR-2.4 Nama spreadsheet, nama sheet, dan rentang kolom dikonfigurasi via `.env`.
 
 ### FR-3 Skema Data
 
-**Sheet `Tasks`** (kolom final dikonfirmasi saat implementasi; minimal):
+Sheet Tasks asli milik user (ID Tugas, Path/Role, PIC Role, Periode, Nama Tugas & Rincian Aktivitas, Target Deliverable, Indikator Keberhasilan, Prioritas, Status, Catatan) **tidak dibaca bot** — terlalu kompleks dan dikelola manusia. Bot memakai sheet sederhana khusus:
+
+**Sheet `Reminders`** (dibuat user, satu baris = satu reminder):
 
 | Kolom | Tipe | Keterangan |
 |---|---|---|
-| id_task | teks | Identitas task |
-| role | teks | Role PIC |
-| nama_pic | teks | Kunci lookup ke sheet Contacts |
-| tanggal_deadline | tanggal | Deadline task (untuk konteks pesan, opsional diisi) |
-| deskripsi_task | teks | Detail task |
-| pesan_reminder | teks | **Isi pesan WA yang dikirim apa adanya** |
-| waktu_kirim | datetime | Kapan reminder dikirim (timezone Asia/Jakarta) |
-| status | teks | Kosong/`PENDING` → `TERKIRIM` / `GAGAL` / `ERROR: <alasan>` (ditulis bot) |
-| waktu_terkirim | datetime | Timestamp aktual pengiriman (ditulis bot) |
+| ID Tugas | teks | Referensi ke sheet Tasks asli (untuk manusia) |
+| PIC Role | teks | Kunci lookup ke sheet Contacts (mis. `Data Scientist 1`) |
+| Nama Tugas | teks | Nama singkat task, dipakai placeholder `{task}` |
+| Waktu Kirim | datetime | Kapan reminder dikirim (timezone Asia/Jakarta) |
+| Pesan Reminder | teks | Isi pesan WA, dukung placeholder |
+| Status Kirim | teks | Kosong/`PENDING` → `TERKIRIM` / `GAGAL` / `ERROR: <alasan>` (ditulis bot) |
+| Waktu Terkirim | datetime | Timestamp aktual pengiriman (ditulis bot) |
 
 **Sheet `Contacts`**:
 
 | Kolom | Tipe | Keterangan |
 |---|---|---|
-| nama_pic | teks | Harus cocok dengan `nama_pic` di Tasks |
-| role | teks | Opsional, untuk lookup fallback by role |
-| nomor_wa | teks | Format internasional atau lokal; bot menormalisasi ke `62xxx` |
+| PIC Role | teks | Harus cocok dengan `PIC Role` di Reminders (case-insensitive, trim) |
+| Nomor WA | teks | Format internasional atau lokal; bot menormalisasi ke `62xxx` |
 
-- FR-3.1 Jika struktur sheet user yang sekarang berbeda, dibuat lapisan mapping kolom via config sehingga tidak perlu merombak sheet secara besar.
+- FR-3.1 Header sheet mengikuti nama persis di atas; user bebas menambah kolom lain di sebelah kanan — bot hanya membaca kolom bernama sesuai daftar.
 
 ### FR-4 Scheduler & Pengiriman
 - FR-4.1 Bot polling sheet setiap 1 menit (interval configurable).
-- FR-4.2 Baris dikirim jika: `waktu_kirim <= sekarang` DAN `status` kosong/`PENDING` DAN `pesan_reminder` terisi.
+- FR-4.2 Baris dikirim jika: `waktu_kirim <= sekarang` DAN `status` kosong/`PENDING` DAN `pesan_reminder` terisi. Baris yang jadwalnya sudah lewat saat bot baru dinyalakan tetap langsung dikirim (catch-up), tanpa batas maksimal keterlambatan.
 - FR-4.3 Setiap baris dikirim tepat satu kali (idempoten lewat kolom status; proses kirim meng-claim baris dengan menulis status sebelum/sesudah kirim).
-- FR-4.4 Nomor lookup: cari `nama_pic` di Contacts (case-insensitive, trim); fallback ke `role` bila dikonfigurasi.
-- FR-4.5 Pesan dikirim apa adanya dari kolom `pesan_reminder` (dukung placeholder opsional `{nama}`, `{task}`, `{deadline}` — bonus, bukan keharusan v1).
+- FR-4.4 Nomor lookup: cari `PIC Role` di sheet Contacts (case-insensitive, trim).
+- FR-4.5 Pesan diambil dari kolom `Pesan Reminder` dengan dukungan placeholder yang diganti dari kolom lain di baris yang sama: `{pic}` (PIC Role), `{task}` (Nama Tugas), `{id}` (ID Tugas). Placeholder yang tidak dikenal dibiarkan apa adanya.
 - FR-4.6 Pengiriman antar baris diberi jeda kecil (mis. 2–5 detik acak) untuk menghindari rate-limit WA.
 - FR-4.7 Semua waktu diproses dalam timezone `Asia/Jakarta` (configurable).
 
@@ -113,7 +112,7 @@ Dibutuhkan bot WhatsApp yang otomatis mengirim pesan reminder custom ke nomor WA
 - **NFR-1 Keandalan**: container restart tidak menyebabkan dobel-kirim (status di sheet = source of truth).
 - **NFR-2 Ringan**: image & runtime kecil (Node.js Alpine/slim, tanpa browser) — target RAM < 256 MB.
 - **NFR-3 Keamanan**: JSON key service account dan `.env` tidak boleh masuk image/git; secret via environment/mount file.
-- **NFR-4 Maintainability**: TypeScript, modul terpisah (wa client, sheets client, scheduler, mapper), mudah dikembangkan (mis. tambah fitur repeat reminder nanti).
+- **NFR-4 Maintainability**: TypeScript, struktur file datar per tanggung jawab (`config.ts`, `sheets.ts`, `wa.ts`, `scheduler.ts`, `index.ts`) tanpa abstraksi berlebihan; versi Baileys di-pin di package.json; config `.env` divalidasi saat start (fail fast dengan pesan error jelas); README memuat panduan setup lengkap dari nol.
 
 ## 7. Arsitektur
 
@@ -124,7 +123,7 @@ Dibutuhkan bot WhatsApp yang otomatis mengirim pesan reminder custom ke nomor WA
 │      │                                                               │
 │      ▼                                                               │
 │  Scheduler ──► Sheets Client (googleapis) ──► Google Sheets API      │
-│      │              baca Tasks+Contacts / tulis status               │
+│      │              baca Reminders+Contacts / tulis status           │
 │      ▼                                                               │
 │  ReminderProcessor ──► WA Client (Baileys) ──► WhatsApp servers      │
 │                                                                      │
@@ -135,9 +134,9 @@ Dibutuhkan bot WhatsApp yang otomatis mengirim pesan reminder custom ke nomor WA
 
 **Komponen**:
 1. `wa-client` — wrapper Baileys: connect, simpan session, kirim pesan, reconnect.
-2. `sheets-client` — baca range Tasks/Contacts, tulis status per baris.
+2. `sheets-client` — baca range Reminders/Contacts, tulis status per baris.
 3. `scheduler` — cron loop: ambil due rows → proses → update status.
-4. `contact-mapper` — lookup nama/role → nomor, normalisasi format nomor ke 62xxx.
+4. `contact-mapper` — lookup PIC Role → nomor, normalisasi format nomor ke 62xxx.
 5. `config` — parsing `.env` + validasi saat start (fail fast kalau ada yang kurang).
 
 **Stack**: Node.js 22 + TypeScript, `@whiskeysockets/baileys`, `googleapis`, `node-cron`, `dotenv`, `pino` (logging).
@@ -168,8 +167,9 @@ Dibutuhkan bot WhatsApp yang otomatis mengirim pesan reminder custom ke nomor WA
 - Tidak ada dobel kirim setelah restart container.
 - Setup di server baru < 15 menit mengikuti README.
 
-## 11. Open Questions (dikonfirmasi saat implementasi)
+## 11. Keputusan Final (hasil konfirmasi dengan user)
 
-1. Struktur kolom persis sheet Tasks & Contacts milik user (nama header, urutan) — akan disesuaikan via config mapping.
-2. Apakah perlu placeholder variabel di pesan (`{nama}` dsb.) untuk v1 atau kirim teks mentah saja.
-3. Perilaku untuk baris yang `waktu_kirim`-nya sudah lewat lama saat bot pertama kali dinyalakan: kirim langsung (catch-up) atau tandai `ERROR: terlewat`? **Default proposal: kirim langsung.**
+1. **Struktur sheet**: bot TIDAK membaca sheet Tasks asli yang kompleks; bot memakai sheet `Reminders` sederhana + sheet `Contacts` (skema di FR-3).
+2. **Placeholder**: dipakai — `{pic}`, `{task}`, `{id}` diganti otomatis dari kolom baris yang sama.
+3. **Catch-up**: baris yang waktu kirimnya sudah lewat saat bot dinyalakan langsung dikirim.
+4. **Maintainability**: struktur file datar, validasi config fail-fast, README setup lengkap, versi Baileys di-pin.
