@@ -1,6 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseContacts, parseReminders, parseSendTime, parseTaskStatus } from "./sheets.js";
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import type { Config } from "./config.js";
+import { createSheetsClient, parseContacts, parseReminders, parseSendTime, parseTaskStatus } from "./sheets.js";
+
+test("createSheetsClient menolak path kredensial yang bukan file", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "wa-bot-"));
+  const cfg = { googleCredsPath: dir, spreadsheetId: "x" } as Config;
+  await assert.rejects(createSheetsClient(cfg), /bukan file/);
+});
 
 const HEADER = [
   "ID Tugas",

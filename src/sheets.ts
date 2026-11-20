@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { google } from "googleapis";
 import type { Config } from "./config.js";
 import { normalizePhone } from "./template.js";
@@ -125,6 +125,13 @@ export interface SheetsClient {
 }
 
 export async function createSheetsClient(cfg: Config): Promise<SheetsClient> {
+  if (!statSync(cfg.googleCredsPath, { throwIfNoEntry: false })?.isFile()) {
+    throw new Error(
+      `GOOGLE_CREDENTIALS_PATH (${cfg.googleCredsPath}) bukan file. ` +
+        "Kalau isinya direktori kosong, itu dibuat otomatis oleh Docker: hapus direktori itu, " +
+        "letakkan file JSON service account di path tersebut, lalu restart container.",
+    );
+  }
   const credentials = JSON.parse(readFileSync(cfg.googleCredsPath, "utf8"));
   const auth = new google.auth.GoogleAuth({
     credentials,
